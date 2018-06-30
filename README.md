@@ -1,2 +1,1 @@
-readme
-develop
+Webpack v4 configuration.
