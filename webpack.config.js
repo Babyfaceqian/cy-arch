@@ -20,7 +20,7 @@ let cleanOptions = {
 var configFunc = (env, argv) => {
 
     const config = {
-        entry: "./index.js",
+        entry: "./src/index.jsx",
         output: {
             path: path.resolve(__dirname, './dist'),
             filename: '[hash].bundle.js'
@@ -28,7 +28,16 @@ var configFunc = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.js$/,
+                    test: /\.jsx$/,
+                    loader: 'eslint-loader',
+                    enforce: "pre",
+                    include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+                    // options: { // 这里的配置项参数将会被传递到 eslint 的 CLIEngine 
+                    //     formatter: require('eslint-friendly-formatter') // 指定错误报告的格式规范
+                    // }
+                },
+                {
+                    test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
@@ -55,7 +64,7 @@ var configFunc = (env, argv) => {
             new HtmlWebpackPlugin({     // 将js, css文件引入html中
                 title: "CY Architectrue",
                 filename: 'index.html',
-                template: 'index.template.html',
+                template: 'src/index.template.html',
                 inject: 'body',
                 hash: false   // will append like bundle.js?[hash] if true, instead, we configure the hash in output.
             }),
