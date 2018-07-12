@@ -21,7 +21,7 @@ export default class Main extends React.Component {
 
         //(1)转化数据为适合生成饼图的对象数组
         var pie = d3.layout.pie(dataset);
-
+        console.log(pie);
         var h = 300;
         var w = 300;
 
@@ -34,7 +34,8 @@ export default class Main extends React.Component {
         var arc = d3.svg.arc()//设置弧度的内外径，等待传入的数据生成弧度
             .outerRadius(outerRadius)
             .innerRadius(innerRadius)
-            .cornerRadius(50);
+            .cornerRadius(50)
+            .padAngle(0.3);
 
         var svg = d3.select('body')
             .append('svg')
