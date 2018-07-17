@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Babyfaceqian/cy-arch#readme",
   "dependencies": {
+    "antd": "^3.7.0",
     "d3": "^4.13.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
