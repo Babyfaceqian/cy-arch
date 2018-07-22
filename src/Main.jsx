@@ -22,7 +22,9 @@ export default class Main extends React.Component {
     }
 
     onClick() {
-        this.renderRing([Math.random() * 20, Math.random() * 20]);
+        let n1 = Math.random() * 20;
+        let n2 = Math.random() * 20;
+        this.renderRing([Math.min(n1, n2), Math.max(n1, n2)]);
     }
 
     changeNum() {
@@ -83,7 +85,7 @@ export default class Main extends React.Component {
                     return arc(d);
                 };
             });//将角度转为弧度（d3使用弧度绘制）
-        }
+    }
     render() {
 
         return (
