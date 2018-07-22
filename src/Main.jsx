@@ -29,14 +29,6 @@ export default class Main extends React.Component {
         this.setState({ value: Math.random() * 100 });
     }
 
-    renderTriangle() {
-        d3.select('#rect').append('rect')
-            .attr('id', 'myrect')
-            .attr('width', '100px')
-            .attr('height', '100px');
-        d3.select('#myrect')
-            .style('border-radius', '10px');
-    }
     renderRing(dataset) {
         d3.selectAll('svg').remove();
         //(1)转化数据为适合生成饼图的对象数组
@@ -91,17 +83,7 @@ export default class Main extends React.Component {
                     return arc(d);
                 };
             });//将角度转为弧度（d3使用弧度绘制）
-
-        //(6)为组中每个元素添加文本
-        arcs.append('text')//每个g元素都追加一个path元素用绑定到这个g的数据d生成路径信息
-            .attr('transform', function (d) {
-                return 'translate(' + arc.centroid(d) + ')';//计算每个弧形的中心点（几何中心）
-            })
-            .attr('text-anchor', 'middle')
-            .text(function (d) {
-                return d.value;//这里已经转为对象了
-            });
-    }
+        }
     render() {
 
         return (

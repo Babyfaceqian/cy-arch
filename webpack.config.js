@@ -11,9 +11,9 @@ let pathsToClean = [
 
 // the clean options to use
 let cleanOptions = {
-    root: __dirname,    // bsolute path to your webpack root folder
+    root: __dirname, // bsolute path to your webpack root folder
     // exclude: ['shared.js'],
-    verbose: true,  // Write logs to console.
+    verbose: true, // Write logs to console.
     // dry: false  // Use boolean "true" to test/emulate delete. (will not remove files).
 }
 
@@ -26,8 +26,7 @@ var configFunc = (env, argv) => {
             filename: '[hash].bundle.js'
         },
         module: {
-            rules: [
-                {
+            rules: [{
                     test: /\.jsx$/,
                     loader: 'eslint-loader',
                     enforce: "pre",
@@ -42,16 +41,72 @@ var configFunc = (env, argv) => {
                     loader: 'babel-loader',
                     options: {
                         presets: ['env', 'react', 'stage-0'],
-                        plugins: [["import", {
-                            "libraryName": "antd",
-                            "style": 'css',   // or 'css'
-                        }]]
+                        plugins: [
+                            ["import", {
+                                "libraryName": "antd",
+                                "libraryDirectory": "es",
+                                "style": 'css', // or 'css'
+                            }]
+                        ]
                     }
                 },
+
                 {
-                    test: /\.(css|less)$/,
-                    use: extractTextWebpackPlugin.extract({ fallback: 'style-loader', use: ['css-loader', 'less-loader'] })
-                }
+                    test: /\.css$/,
+                    use: [
+                        'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                importLoaders: 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.less$/,
+                    exclude: [/src/],
+                    use: [
+                        'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                importLoaders: 1
+                            }
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                modifyVars: {
+                                    '@primary-color': '#1DA57A'
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.less$/,
+                    exclude: [/node_modules/],
+                    use: [
+                        'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                localIdentName: '[local]_[hash:base64:8]'
+                            }
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                modifyVars: {
+                                    '@primary-color': '#1DA57A'
+                                }
+                            }
+                        }
+                    ]
+                },
+
             ],
             // devServer: {
             //     inline: true,
@@ -65,12 +120,12 @@ var configFunc = (env, argv) => {
             //     parallel: true,  // Enable parallelization. Default number of concurrent runs: os.cpus().length - 1.
             //     sourceMap: true
             // }),
-            new HtmlWebpackPlugin({     // 将js, css文件引入html中
+            new HtmlWebpackPlugin({ // 将js, css文件引入html中
                 title: "CY Architectrue",
                 filename: 'index.html',
                 template: 'src/index.template.html',
                 inject: 'body',
-                hash: false   // will append like bundle.js?[hash] if true, instead, we configure the hash in output.
+                hash: false // will append like bundle.js?[hash] if true, instead, we configure the hash in output.
             }),
             new extractTextWebpackPlugin('[hash].css'),
             new CleanWebpackPlugin(pathsToClean, cleanOptions)
@@ -78,7 +133,7 @@ var configFunc = (env, argv) => {
     };
 
     if (argv.mode === 'development') {
-        config.devtool = 'source-map';  // debug in browser
+        config.devtool = 'source-map'; // debug in browser
     }
 
     /**
